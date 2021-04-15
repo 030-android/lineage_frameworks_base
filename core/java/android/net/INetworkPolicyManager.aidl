@@ -82,4 +82,6 @@ interface INetworkPolicyManager {
     boolean isUidRestrictedOnMeteredNetworks(int uid);
 
     void notifyDenylistChanged(in int[] uidsAdded, in int[] uidsRemoved);
+    byte[] getBackupPayload(int user);
+    void applyRestore(in byte[] payload, int user);
 }
