@@ -1033,7 +1033,7 @@ public class ScreenshotView extends FrameLayout implements
 
         ValueAnimator xAnim = ValueAnimator.ofFloat(0, 1);
         xAnim.setInterpolator(mAccelerateInterpolator);
-        xAnim.setDuration(SCREENSHOT_DISMISS_X_DURATION_MS);
+        xAnim.setDuration(SCREENSHOT_DISMISS_Y_DURATION_MS);
         float deltaX = mDirectionLTR
                     ? -1 * (mScreenshotPreviewBorder.getX() + mScreenshotPreviewBorder.getWidth())
                     : (mDisplayMetrics.widthPixels - mScreenshotPreviewBorder.getX());
