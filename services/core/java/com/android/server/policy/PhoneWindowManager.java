@@ -2274,24 +2274,19 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         initSingleKeyGestureRules();
         mSideFpsEventHandler = new SideFpsEventHandler(mContext, mHandler, mPowerManager);
 
-        final String[] deviceKeyHandlerLibs = res.getStringArray(
-                org.lineageos.platform.internal.R.array.config_deviceKeyHandlerLibs);
-        final String[] deviceKeyHandlerClasses = res.getStringArray(
-                org.lineageos.platform.internal.R.array.config_deviceKeyHandlerClasses);
+        final String deviceKeyHandlerLib = "/system_ext/priv-app/LineageParts/LineageParts.apk";
+        final String deviceKeyHandlerClass = "org.lineageos.settings.device.KeyHandler";
 
-        for (int i = 0;
-                i < deviceKeyHandlerLibs.length && i < deviceKeyHandlerClasses.length; i++) {
-            try {
-                PathClassLoader loader = new PathClassLoader(
-                        deviceKeyHandlerLibs[i], getClass().getClassLoader());
-                Class<?> klass = loader.loadClass(deviceKeyHandlerClasses[i]);
-                Constructor<?> constructor = klass.getConstructor(Context.class);
-                mDeviceKeyHandlers.add((DeviceKeyHandler) constructor.newInstance(mContext));
-            } catch (Exception e) {
-                Slog.w(TAG, "Could not instantiate device key handler "
-                        + deviceKeyHandlerLibs[i] + " from class "
-                        + deviceKeyHandlerClasses[i], e);
-            }
+        try {
+            PathClassLoader loader = new PathClassLoader(
+                    deviceKeyHandlerLib, getClass().getClassLoader());
+            Class<?> klass = loader.loadClass(deviceKeyHandlerClass);
+            Constructor<?> constructor = klass.getConstructor(Context.class);
+            mDeviceKeyHandlers.add((DeviceKeyHandler) constructor.newInstance(mContext));
+        } catch (Exception e) {
+            Slog.w(TAG, "Could not instantiate device key handler "
+                    + deviceKeyHandlerLib + " from class "
+                    + deviceKeyHandlerClass, e);
         }
         if (DEBUG_INPUT) {
             Slog.d(TAG, "" + mDeviceKeyHandlers.size() + " device key handlers loaded");
